@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Grid,
   Card,
@@ -75,14 +75,18 @@ function AdmissionDashboard() {
     loadData();
   }, []);
 
-  const filteredTrends = useMemo(() => {
-    if (!data?.applicationTrends) return [];
-    return data.applicationTrends.filter((t) => {
-      if (fromDate && t.date < fromDate) return false;
-      if (toDate && t.date > toDate) return false;
-      return true;
+  let filteredTrends = [];
+  if (data && data.applicationTrends) {
+    filteredTrends = data.applicationTrends.filter((item) => {
+      if (fromDate && item.date < fromDate) {
+        return false;
+      } else if (toDate && item.date > toDate) {
+        return false;
+      } else {
+        return true;
+      }
     });
-  }, [data, fromDate, toDate]);
+  }
 
   if (!data) {
     return (
